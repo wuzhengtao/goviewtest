@@ -56,8 +56,6 @@ class GoController : UIViewController {
         let point = event.allTouches?.first?.location(in: bv)
         let boardPoint = boardSize.cgpoint2board(input: point!)
         pe = boardPoint
-//        print(point)
-//        print(boardPoint)
         up = false
         if !havePoint {
             newPoint(cg: boardPoint, view: bv)
@@ -87,7 +85,7 @@ class GoController : UIViewController {
     }
     
     @IBAction func startTime(_ sender: UIButton) {
-        checkpe()
+        checkpoint()
         if !haveGo {
             totalTime = myTimer * 1000
             up = true
@@ -156,8 +154,12 @@ class GoController : UIViewController {
         }
     }
     
-    func checkpe() {
-        if (pe?.x)! > CGFloat(288) || (pe?.x)! < CGFloat(0) || (pe?.y)! > CGFloat(321) || (pe?.y)! < CGFloat(33) {
+    func checkpoint() {
+        let point = newpoint?.frame.origin
+        if (point?.x)! > CGFloat(288) ||
+            (point?.x)! < CGFloat(0) ||
+            (point?.y)! > CGFloat(321) ||
+            (point?.y)! < CGFloat(33) {
             havePoint = false
             newpoint?.removeFromSuperview()
         }

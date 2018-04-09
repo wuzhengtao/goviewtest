@@ -28,6 +28,9 @@ class BoardSize {
         let inputy = input.y
         let tempx = ((inputx - CGFloat(left)) / CGFloat(size)).rounded()
         let tempy = ((inputy - CGFloat(up)) / CGFloat(size)).rounded()
+        if Int(tempx) * 9 + Int(tempy) < 0 || Int(tempx) * 9 + Int(tempy) > 80 {
+            return CGPoint.zero
+        }
         if (array[Int(tempx) * 9 + Int(tempy)] == 1) {
             return CGPoint.zero
         }
@@ -42,7 +45,6 @@ class BoardSize {
         let tempx = ((pointx + 20 - CGFloat(left)) / CGFloat(size)).rounded()
         let tempy = ((pointy + 20 - CGFloat(up)) / CGFloat(size)).rounded()
         array[Int(tempx) * 9 + Int(tempy)] = 1;
-        print(point)
     }
     
 }
