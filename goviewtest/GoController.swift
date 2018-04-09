@@ -22,6 +22,7 @@ class GoController : UIViewController {
     
     var startPoint : CGPoint?
     var ps : CGPoint?
+    var pe : CGPoint?
     
     var totalTime : Int = 0
     
@@ -54,6 +55,7 @@ class GoController : UIViewController {
     @IBAction func touchStart(_ sender: UIButton, forEvent event: UIEvent) {
         let point = event.allTouches?.first?.location(in: bv)
         let boardPoint = boardSize.cgpoint2board(input: point!)
+        pe = boardPoint
 //        print(point)
 //        print(boardPoint)
         up = false
@@ -85,6 +87,7 @@ class GoController : UIViewController {
     }
     
     @IBAction func startTime(_ sender: UIButton) {
+        checkpe()
         if !haveGo {
             totalTime = myTimer * 1000
             up = true
@@ -94,12 +97,12 @@ class GoController : UIViewController {
         up = false
         if havePoint {
             let endPoint = event.allTouches?.first?.location(in: bv)
-            let pe = boardSize.cgpoint2board(input: addCGPoint(a: subCGPoint(a: endPoint!, b: startPoint!), b: ps!))
+            pe = boardSize.cgpoint2board(input: addCGPoint(a: subCGPoint(a: endPoint!, b: startPoint!), b: ps!))
             if (pe == CGPoint.zero) {
                 return
             }
             
-            newpoint?.transform = __CGAffineTransformMake(1, 0, 0, 1, (pe.x), (pe.y))
+            newpoint?.transform = __CGAffineTransformMake(1, 0, 0, 1, (pe?.x)!, (pe?.y)!)
         }
     }
     
@@ -148,7 +151,15 @@ class GoController : UIViewController {
         if havePoint {
             havePoint = false
             turn = !turn
+            boardSize.addPoint(point: (newpoint?.frame.origin)!)
             changepoint()
+        }
+    }
+    
+    func checkpe() {
+        if (pe?.x)! > CGFloat(288) || (pe?.x)! < CGFloat(0) || (pe?.y)! > CGFloat(321) || (pe?.y)! < CGFloat(33) {
+            havePoint = false
+            newpoint?.removeFromSuperview()
         }
     }
     
